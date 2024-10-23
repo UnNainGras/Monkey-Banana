@@ -35,8 +35,8 @@ public class PlayerController : MonoBehaviour
     private bool wasonGround;
 
 
-   // public GameObject projectile;
-   // public Transform firePoint;
+   public GameObject projectile;
+   public Transform firePoint;
 
     public float fireRate = 0.5f; // Time between each shot
     private float nextFireTime = 0f; // Time of the next allowed shot
@@ -238,8 +238,8 @@ public class PlayerController : MonoBehaviour
 
     public void Shoot()
     {
-        //GameObject fireBall = Instantiate(projectile, firePoint.position, Quaternion.identity);
-        //fireBall.GetComponent<Rigidbody2D>().AddForce(firePoint.right * 500f);
+        GameObject fireBall = Instantiate(projectile, firePoint.position, Quaternion.identity);
+        fireBall.GetComponent<Rigidbody2D>().AddForce(firePoint.right * 500f);
     }
 
     public void MobileShoot()

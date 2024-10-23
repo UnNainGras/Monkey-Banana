@@ -7239,7 +7239,9 @@ MonoBehaviour:
   isPaused: 0
   footsteps: {fileID: 1671786042}
   ImpactEffect: {fileID: 51788896}
-  fireRate: 0.5
+  projectile: {fileID: 1898040382}
+  firePoint: {fileID: 1126557505}
+  fireRate: 2
 --- !u!4 &664841624
 Transform:
   m_ObjectHideFlags: 0
@@ -23150,6 +23152,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1898040382 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6071103080464250569, guid: 63f386018c176ab4ca30e3f634c69249, type: 3}
+  m_PrefabInstance: {fileID: 872516301883288480}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2107312980
 GameObject:
   m_ObjectHideFlags: 0
