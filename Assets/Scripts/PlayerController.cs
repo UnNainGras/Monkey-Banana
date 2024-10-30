@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
             footEmissions.rateOverTime = 0f;
         }
 
-        playeranim.SetBool("isGrounded", isGroundedBool);
+        //playeranim.SetBool("isGrounded", isGroundedBool);
        
     }
 
@@ -176,12 +176,14 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool IsGrounded()
-    {
-        float rayLength = 0.25f;
-        Vector2 rayOrigin = new Vector2(groundCheck.transform.position.x, groundCheck.transform.position.y - 0.1f);
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength, groundLayer);
-        return hit.collider != null;
-    }
+{
+    float rayLength = 0.25f;
+    Vector2 rayOrigin = new Vector2(groundCheck.transform.position.x, groundCheck.transform.position.y - 0.1f);
+    RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength, groundLayer);
+
+    return hit.collider != null;
+}
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "killzone")
