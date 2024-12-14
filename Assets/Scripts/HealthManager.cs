@@ -6,12 +6,11 @@ public class HealthManager : MonoBehaviour
     public static HealthManager instance;
     public GameObject damageEffect;
 
-    private int MaxHealth = 6;
+    private int MaxHealth = 5; // 5 full hearts
     public int currentHealth;
 
-    [SerializeField] private Image[] hearts;
+    [SerializeField] private Image[] hearts; // Assign these via Inspector (5 heart images)
     [SerializeField] private Sprite FullHeartSprite;
-    [SerializeField] private Sprite HalfHeartSprite;
     [SerializeField] private Sprite EmptyHeartSprite;
 
     private GameObject Player;
@@ -27,51 +26,35 @@ public class HealthManager : MonoBehaviour
         currentHealth = MaxHealth;
         DisplayHearts();
     }
-   
-  
 
     public void HurtPlayer()
     {
-
         if (currentHealth > 0)
         {
-            currentHealth--;
+            currentHealth--; // Reduce health by 1 heart
             DisplayHearts();
-            //Player.GetComponent<PlayerController>().Knockback();
+
+            if (currentHealth == 0)
+            {
+                GameManager.instance.Death(); // Trigger death logic
+            }
+
+            Instantiate(damageEffect, Player.transform.position, Quaternion.identity);
         }
-        else if (currentHealth <= 0)
-        {
-            GameManager.instance.Death();
-        }
-        
-        Instantiate(damageEffect, Player.transform.position, Quaternion.identity);
     }
 
     public void DisplayHearts()
     {
-        int fullHeartsCount = currentHealth / 2; // Calculate the number of full hearts
-        bool hasHalfHeart = (currentHealth % 2) == 1; // Check if there's a half heart needed
-
         for (int i = 0; i < hearts.Length; i++)
         {
-            if (i < fullHeartsCount)
+            if (i < currentHealth)
             {
-                // Heart should be full
-                hearts[i].sprite = FullHeartSprite;
-            }
-            else if (hasHalfHeart && i == fullHeartsCount)
-            {
-                // Heart should be half
-                hearts[i].sprite = HalfHeartSprite;
+                hearts[i].sprite = FullHeartSprite; // Full heart
             }
             else
             {
-                // Heart should be empty
-                hearts[i].sprite = EmptyHeartSprite;
+                hearts[i].sprite = EmptyHeartSprite; // Empty heart
             }
         }
     }
-
-    
-
 }

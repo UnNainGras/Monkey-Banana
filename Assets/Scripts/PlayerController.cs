@@ -193,28 +193,6 @@ public class PlayerController : MonoBehaviour
     }
     
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //mobile;
     public void MobileMove(float value)
     {

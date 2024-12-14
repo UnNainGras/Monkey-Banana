@@ -6,6 +6,7 @@ TagManager:
   tags:
   - killzone
   - Coin
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -40,9 +41,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Background
     uniqueID: 1681263605
     locked: 0
@@ -60,6 +58,12 @@ TagManager:
     locked: 0
   - name: Platform
     uniqueID: 3300334483
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Enemies
+    uniqueID: 1991203747
     locked: 0
   - name: Player
     uniqueID: 3775889879
