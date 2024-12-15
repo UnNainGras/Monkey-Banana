@@ -2,6 +2,17 @@ using UnityEngine;
 
 public class Enemies : MonoBehaviour
 {
+    // Nouveau : Points de vie
+    public int maxHealth = 3;
+    private int currentHealth;
+
+    // Nouveau : Hit effect
+    public Color hitColor = Color.gray;
+    private Color originalColor;
+    private bool isHit = false;
+
+    private SpriteRenderer spriteRenderer;
+
     public enum EnemyType { Shooter, Kamikaze }
     public EnemyType enemyType;
 
@@ -26,8 +37,6 @@ public class Enemies : MonoBehaviour
     private enum State { Patrolling, Chasing, Stopped, Attacking }
     private State currentState;
 
-    private SpriteRenderer spriteRenderer;
-
     void Start()
     {
         startPosition = transform.position;
@@ -36,6 +45,10 @@ public class Enemies : MonoBehaviour
         currentState = State.Patrolling;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
+
+        // Initialisation des points de vie
+        currentHealth = maxHealth;
 
         chaseSpeed += Random.Range(-0.5f, 0.5f);
         shootCooldown += Random.Range(-0.3f, 0.3f);
@@ -61,6 +74,36 @@ public class Enemies : MonoBehaviour
         }
 
         UpdateOrientation();
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            StartCoroutine(HitEffect());
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
+
+    private System.Collections.IEnumerator HitEffect()
+    {
+        if (isHit) yield break;
+
+        isHit = true;
+        spriteRenderer.color = hitColor; 
+        yield return new WaitForSeconds(0.2f); 
+        spriteRenderer.color = originalColor; 
+        isHit = false;
     }
 
     void Patrol()

@@ -10,24 +10,11 @@ public class UIManager : MonoBehaviour
     public Image blackScreen;
     public float fadeSpeed = 2f;
 
-    //player reference
-
-    public PlayerController playerController;
-
-
     private void Awake()
     {
         instance = this;
     }
 
-    public void DisableMobileControls()
-    {
-        mobileControls.SetActive(false);
-    }
-    public void EnableMobileControls()
-    {
-        mobileControls.SetActive(true);
-    }
 
     private void Update()
     {
@@ -62,10 +49,6 @@ public class UIManager : MonoBehaviour
 
         if (blackScreen.color.a <= 0f)
         {
-            if(playerController.controlmode == Controls.mobile)
-            {
-                EnableMobileControls();
-            }
             fadeFromBlack = false;
         }
     }

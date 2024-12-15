@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private TMP_Text coinText;
 
-    [SerializeField] private PlayerController playerController;
+    [SerializeField] private Player player;
 
     private int coinCount = 0;
     private int gemCount = 0;
@@ -23,15 +23,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] TMP_Text leveCompletePanelTitle;
     [SerializeField] TMP_Text levelCompleteCoins;
 
-
-
-
-   
     private int totalCoins = 0;
   
-
-
-
     private void Awake()
     {
         instance = this;
@@ -42,7 +35,7 @@ public class GameManager : MonoBehaviour
     {
         UpdateGUI();
         UIManager.instance.fadeFromBlack = true;
-        playerPosition = playerController.transform.position;
+        playerPosition = player.transform.position;
 
         FindTotalPickups();
     }
@@ -68,25 +61,17 @@ public class GameManager : MonoBehaviour
     {
         if (!isGameOver)
         {
-            // Disable Mobile Controls
-            UIManager.instance.DisableMobileControls();
-            // Initiate screen fade
-            UIManager.instance.fadeToBlack = true;
+            player.DisableControls();
 
-            // Disable the player object
-            playerController.gameObject.SetActive(false);
+            player.TriggerDeathAnimation();
 
-            // Start death coroutine to wait and then respawn the player
-            StartCoroutine(DeathCoroutine());
-
-            // Update game state
             isGameOver = true;
 
-            // Log death message
-            Debug.Log("Died");
+            StartCoroutine(DeathCoroutine());
         }
     }
- 
+
+
     public void FindTotalPickups()
     {
 
@@ -117,21 +102,25 @@ public class GameManager : MonoBehaviour
         levelCompleteCoins.text = "COINS COLLECTED: "+ coinCount.ToString() +" / " + totalCoins.ToString();
  
     }
-   
-    public IEnumerator DeathCoroutine()
+
+    private IEnumerator DeathCoroutine()
     {
-        yield return new WaitForSeconds(1f);
-        playerController.transform.position = playerPosition;
-
-        // Wait for 2 seconds
+        // Wait for the duration of the death animation (ex: 1.5 seconds or the duration of your animation)
         yield return new WaitForSeconds(1f);
 
-        // Check if the game is still over (in case player respawns earlier)
+        // Now, initiate the screen fade to black after the death animation is shown
+        UIManager.instance.fadeToBlack = true; 
+
+        // Disable the player object
+        player.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(1f);
+
+        player.transform.position = playerPosition;
+
         if (isGameOver)
         {
-            SceneManager.LoadScene(1);
-
-            
+            SceneManager.LoadScene(1); // Or any other respawn mechanism you want
         }
     }
 
