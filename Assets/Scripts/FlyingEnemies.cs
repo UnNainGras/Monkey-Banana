@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Enemies : MonoBehaviour
+public class FlyingEnemies : MonoBehaviour
 {
     // Nouveau : Points de vie
     public int maxHealth = 3;

@@ -197,7 +197,18 @@ public class Player : MonoBehaviour
         {
             if (enemy.CompareTag("Enemy"))
             {
-                enemy.GetComponent<Enemies>().TakeDamage(m_attackDamage);
+                var flyingEnemy = enemy.GetComponent<FlyingEnemies>();
+                if (flyingEnemy != null)
+                {
+                    flyingEnemy.TakeDamage(m_attackDamage);
+                }
+
+                var groundEnemy = enemy.GetComponent<GroundEnemies>();
+                if (groundEnemy != null)
+                {
+                    groundEnemy.TakeDamage(m_attackDamage);
+                }
+
             }
         }
     }

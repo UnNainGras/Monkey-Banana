@@ -6,10 +6,10 @@ public class HealthManager : MonoBehaviour
     public static HealthManager instance;
     public GameObject damageEffect;
 
-    private int MaxHealth = 5; // 5 full hearts
+    private int MaxHealth = 5; 
     public int currentHealth;
 
-    [SerializeField] private Image[] hearts; // Assign these via Inspector (5 heart images)
+    [SerializeField] private Image[] hearts; 
     [SerializeField] private Sprite FullHeartSprite;
     [SerializeField] private Sprite EmptyHeartSprite;
 
@@ -31,12 +31,12 @@ public class HealthManager : MonoBehaviour
     {
         if (currentHealth > 0)
         {
-            currentHealth--; // Reduce health by 1 heart
+            currentHealth--; 
             DisplayHearts();
 
             if (currentHealth == 0)
             {
-                GameManager.instance.Death(); // Trigger death logic
+                GameManager.instance.Death(); 
             }
 
             Instantiate(damageEffect, Player.transform.position, Quaternion.identity);

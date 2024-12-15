@@ -17,8 +17,6 @@ public class GameManager : MonoBehaviour
     private bool isGameOver = false;
     private Vector3 playerPosition;
 
-    //Level Complete
-
     [SerializeField] GameObject levelCompletePanel;
     [SerializeField] TMP_Text leveCompletePanelTitle;
     [SerializeField] TMP_Text levelCompleteCoins;
@@ -105,13 +103,10 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator DeathCoroutine()
     {
-        // Wait for the duration of the death animation (ex: 1.5 seconds or the duration of your animation)
         yield return new WaitForSeconds(1f);
 
-        // Now, initiate the screen fade to black after the death animation is shown
         UIManager.instance.fadeToBlack = true; 
 
-        // Disable the player object
         player.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(1f);
@@ -120,7 +115,7 @@ public class GameManager : MonoBehaviour
 
         if (isGameOver)
         {
-            SceneManager.LoadScene(1); // Or any other respawn mechanism you want
+            SceneManager.LoadScene(1); 
         }
     }
 
