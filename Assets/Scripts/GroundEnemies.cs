@@ -20,21 +20,22 @@ public class GroundEnemies : MonoBehaviour
     private Color originalColor;
     public Color hitColor = Color.gray;
 
-    private bool movingRight = true;  // Détermine si l'ennemi se déplace vers la droite
-
-    // Pour empêcher le slime de traverser le sol
+    private bool movingRight = true;  
+   
     private Rigidbody2D rb;
 
-    // Gestion des dégâts infligés au joueur
-    private bool isTouchingPlayer = false;
-    private float damageInterval = 0.5f;  // Intervalle entre les dégâts répétés
-    private float lastDamageTime = 0f;  // Temps du dernier dégât infligé
+   
+    private int playerCollisionCount = 0; 
+    private float damageInterval = 1f;  
+    private float lastDamageTime = 0f;
+
+    public GameObject hitEffect;
 
     void Start()
     {
         startPosition = transform.position;
-        leftPatrolPoint = startPosition - new Vector3(patrolRange / 2f, 0f, 0f);  // Point de patrouille gauche
-        rightPatrolPoint = startPosition + new Vector3(patrolRange / 2f, 0f, 0f); // Point de patrouille droite
+        leftPatrolPoint = startPosition - new Vector3(patrolRange / 2f, 0f, 0f);  
+        rightPatrolPoint = startPosition + new Vector3(patrolRange / 2f, 0f, 0f); 
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
         currentHealth = maxHealth;
@@ -42,7 +43,7 @@ public class GroundEnemies : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
 
-        rb = GetComponent<Rigidbody2D>();  // Récupérer le Rigidbody2D pour gérer les collisions
+        rb = GetComponent<Rigidbody2D>();  
     }
 
     void Update()
@@ -59,11 +60,10 @@ public class GroundEnemies : MonoBehaviour
         CheckPlayerDetection();
         UpdateOrientation();
 
-        // Vérifier si des dégâts doivent être infligés au joueur
-        if (isTouchingPlayer && Time.time - lastDamageTime >= damageInterval)
+        if (playerCollisionCount > 0 && Time.time - lastDamageTime >= damageInterval)
         {
             HealthManager.instance.HurtPlayer();
-            lastDamageTime = Time.time;  // Mettre à jour le temps du dernier dégât
+            lastDamageTime = Time.time;
         }
     }
 
@@ -92,7 +92,6 @@ public class GroundEnemies : MonoBehaviour
             }
         }
     }
-
 
     private void CheckPlayerDetection()
     {
@@ -130,10 +129,12 @@ public class GroundEnemies : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            Instantiate(hitEffect, transform.position, Quaternion.identity);
             Die();
         }
         else
         {
+            Instantiate(hitEffect, transform.position, Quaternion.identity);
             StartCoroutine(HitEffect());
         }
     }
@@ -154,9 +155,7 @@ public class GroundEnemies : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            HealthManager.instance.HurtPlayer();
-            lastDamageTime = Time.time;  
-            isTouchingPlayer = true;  
+            playerCollisionCount++;
         }
     }
 
@@ -164,7 +163,7 @@ public class GroundEnemies : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            isTouchingPlayer = false;
+            playerCollisionCount = Mathf.Max(0, playerCollisionCount - 1);
         }
     }
 
@@ -180,7 +179,7 @@ public class GroundEnemies : MonoBehaviour
             }
             else if (direction < 0)
             {
-                spriteRenderer.flipX = false; 
+                spriteRenderer.flipX = false;
             }
         }
     }

@@ -987,7 +987,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -107.1001, y: -66.099976}
+  m_AnchoredPosition: {x: -107.100586, y: -66.099976}
   m_SizeDelta: {x: 100, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &451801130
@@ -2212,7 +2212,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.9788332, y: -0.23783016, z: -10}
+  m_LocalPosition: {x: -8.052185, y: -0.19422007, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2580,7 +2580,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 94.1001, y: -65.80005}
+  m_AnchoredPosition: {x: 94.100586, y: -65.80005}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &675641362
@@ -12640,6 +12640,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5765424523183356906, guid: b82efdf5fbb7c7146829a9866e82724d, type: 3}
+      propertyPath: hitEffect
+      value: 
+      objectReference: {fileID: 6567284728910244405, guid: eca8b999777625341a0abeaa76a48aa2, type: 3}
     - target: {fileID: 6418864946511816044, guid: b82efdf5fbb7c7146829a9866e82724d, type: 3}
       propertyPath: m_Name
       value: Bat
@@ -12684,6 +12688,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9118488112161163928, guid: b82efdf5fbb7c7146829a9866e82724d, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: e57c154f727d3a74db9d4424add7d341, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12906,9 +12914,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinText: {fileID: 451801130}
   player: {fileID: 419876186}
-  levelCompletePanel: {fileID: 1588362538}
-  leveCompletePanelTitle: {fileID: 348522801}
-  levelCompleteCoins: {fileID: 846964000}
 --- !u!4 &1888433146
 Transform:
   m_ObjectHideFlags: 0
@@ -13341,7 +13346,7 @@ GameObject:
   - component: {fileID: 2026881417}
   m_Layer: 0
   m_Name: LevelCompleteTrigger
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13683,7 +13688,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2077242528579177308, guid: 40be0002152c0ae479b610984ce776ee, type: 3}
       propertyPath: m_Name
-      value: slimer-idle1
+      value: slime
+      objectReference: {fileID: 0}
+    - target: {fileID: 3271480145150497296, guid: 40be0002152c0ae479b610984ce776ee, type: 3}
+      propertyPath: hitEffect
+      value: 
+      objectReference: {fileID: 6567284728910244405, guid: 67f3ecb3fa485084ea71ce629aee5f72, type: 3}
+    - target: {fileID: 3271480145150497296, guid: 40be0002152c0ae479b610984ce776ee, type: 3}
+      propertyPath: patrolRange
+      value: 18.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

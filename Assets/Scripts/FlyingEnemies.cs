@@ -34,6 +34,8 @@ public class FlyingEnemies : MonoBehaviour
 
     public float explosionRange = 1f;
 
+    public GameObject hitEffect;
+
     private enum State { Patrolling, Chasing, Stopped, Attacking }
     private State currentState;
 
@@ -82,10 +84,12 @@ public class FlyingEnemies : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            Instantiate(hitEffect, transform.position, Quaternion.identity);
             Die();
         }
         else
         {
+            Instantiate(hitEffect, transform.position, Quaternion.identity);
             StartCoroutine(HitEffect());
         }
     }
