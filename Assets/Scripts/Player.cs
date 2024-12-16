@@ -25,26 +25,31 @@
         private float m_rollDuration = 8.0f / 14.0f;
         private float m_rollCurrentTime;
 
-        void Start()
+        private bool isDamageBoosted = false;
+        private bool isSpeedBoosted = false;
+        private float originalSpeed;
+        private int originalDamage;
+
+
+    void Start()
         {
             m_animator = GetComponent<Animator>();
             m_body2d = GetComponent<Rigidbody2D>();
             m_groundSensor = transform.Find("GroundSensor").GetComponent<Sensor_Player>();
-        }
+            originalSpeed = m_speed;      
+            originalDamage = m_attackDamage; 
+    }
 
         void Update()
         {
-            // Augmenter le timer pour le combo d'attaque
             m_timeSinceAttack += Time.deltaTime;
 
-            // Timer pour la durée du roulé
             if (m_rolling)
                 m_rollCurrentTime += Time.deltaTime;
 
             if (m_rollCurrentTime > m_rollDuration)
                 m_rolling = false;
 
-            // Vérifier si le joueur vient de toucher le sol
             if (!m_grounded && m_groundSensor.State())
             {
                 m_grounded = true;
@@ -213,7 +218,46 @@
             }
         }
 
-        private void OnDrawGizmosSelected()
+    public void BoostDamage(float duration)
+    {
+        if (!isDamageBoosted)
+        {
+            isDamageBoosted = true;
+            m_attackDamage *= 2; 
+            Debug.Log("Boost de dégâts activé !");
+            StartCoroutine(ResetDamageBoost(duration));
+        }
+    }
+
+    private IEnumerator ResetDamageBoost(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        m_attackDamage = originalDamage; 
+        isDamageBoosted = false;
+        Debug.Log("Boost de dégâts terminé.");
+    }
+
+    public void BoostSpeed(float duration)
+    {
+        if (!isSpeedBoosted)
+        {
+            isSpeedBoosted = true;
+            m_speed *= 1.5f; 
+            Debug.Log("Boost de vitesse activé !");
+            StartCoroutine(ResetSpeedBoost(duration));
+        }
+    }
+
+    private IEnumerator ResetSpeedBoost(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        m_speed = originalSpeed;
+        isSpeedBoosted = false;
+        Debug.Log("Boost de vitesse terminé.");
+    }
+
+
+    private void OnDrawGizmosSelected()
         {
             float offsetX = m_facingDirection * m_attackRange;
             Gizmos.color = Color.red;
