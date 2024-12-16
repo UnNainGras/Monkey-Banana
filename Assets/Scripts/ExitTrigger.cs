@@ -8,6 +8,10 @@ public class ExitTrigger : MonoBehaviour
 
     private bool isUnlocked = false;
 
+    [SerializeField] private Sprite closedDoorSprite;
+    [SerializeField] private Sprite openDoorSprite;
+    private SpriteRenderer spriteRenderer;
+
     private void Awake()
     {
         instance = this;
@@ -15,6 +19,7 @@ public class ExitTrigger : MonoBehaviour
 
     private void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         Lock();
     }
 
@@ -22,14 +27,14 @@ public class ExitTrigger : MonoBehaviour
     {
         isUnlocked = false;
         gameObject.GetComponent<Collider2D>().enabled = false;
-        Debug.Log("Sortie verrouillée. Collectez toutes les pièces pour déverrouiller !");
+        spriteRenderer.sprite = closedDoorSprite;
     }
 
     public void Unlock()
     {
         isUnlocked = true;
         gameObject.GetComponent<Collider2D>().enabled = true;
-        Debug.Log("Sortie déverrouillée !");
+        spriteRenderer.sprite = openDoorSprite;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

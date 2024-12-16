@@ -105,6 +105,7 @@ MonoBehaviour:
   detectionRadius: 9.5
   chaseSpeed: 4
   hitColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  hitEffect: {fileID: 6567284728910244405, guid: 67f3ecb3fa485084ea71ce629aee5f72, type: 3}
 --- !u!95 &7282125015766783271
 Animator:
   serializedVersion: 5

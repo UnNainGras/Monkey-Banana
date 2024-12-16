@@ -134,6 +134,7 @@ MonoBehaviour:
   shootCooldown: 2
   predictiveShooting: 1
   explosionRange: 1
+  hitEffect: {fileID: 6567284728910244405, guid: eca8b999777625341a0abeaa76a48aa2, type: 3}
 --- !u!70 &162363464779557770
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -185,7 +186,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: e57c154f727d3a74db9d4424add7d341, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
