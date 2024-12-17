@@ -4,17 +4,15 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
-    public GameObject mobileControls;
-
-    public bool fadeToBlack, fadeFromBlack;
+    public GameObject blackScreenPanel;
     public Image blackScreen;
+    public bool fadeToBlack, fadeFromBlack;
     public float fadeSpeed = 2f;
 
     private void Awake()
     {
         instance = this;
     }
-
 
     private void Update()
     {
@@ -25,18 +23,22 @@ public class UIManager : MonoBehaviour
     {
         if (fadeToBlack)
         {
+            ActivatePanel();
             FadeToBlack();
         }
         else if (fadeFromBlack)
         {
             FadeFromBlack();
+            if (blackScreen.color.a <= 0f)
+            {
+                DeactivatePanel();
+            }
         }
     }
 
     private void FadeToBlack()
     {
         FadeScreen(1f);
-
         if (blackScreen.color.a >= 1f)
         {
             fadeToBlack = false;
@@ -46,7 +48,6 @@ public class UIManager : MonoBehaviour
     private void FadeFromBlack()
     {
         FadeScreen(0f);
-
         if (blackScreen.color.a <= 0f)
         {
             fadeFromBlack = false;
@@ -58,5 +59,21 @@ public class UIManager : MonoBehaviour
         Color currentColor = blackScreen.color;
         float newAlpha = Mathf.MoveTowards(currentColor.a, targetAlpha, fadeSpeed * Time.deltaTime);
         blackScreen.color = new Color(currentColor.r, currentColor.g, currentColor.b, newAlpha);
+    }
+
+    private void ActivatePanel()
+    {
+        if (blackScreenPanel != null && !blackScreenPanel.activeSelf)
+        {
+            blackScreenPanel.SetActive(true);
+        }
+    }
+
+    private void DeactivatePanel()
+    {
+        if (blackScreenPanel != null && blackScreenPanel.activeSelf)
+        {
+            blackScreenPanel.SetActive(false);
+        }
     }
 }
