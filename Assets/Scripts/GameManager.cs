@@ -7,7 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    [Header("UI")]
     [SerializeField] private TMP_Text coinText;
+    [SerializeField] private TMP_Text levelText; // TextMeshPro pour afficher le nom de la scène
 
     [SerializeField] private Player player;
 
@@ -15,6 +17,7 @@ public class GameManager : MonoBehaviour
     private int totalCoins = 0;
     private bool isGameOver = false;
     private Vector3 playerPosition;
+    private string currentLevelName;
 
     private void Awake()
     {
@@ -24,10 +27,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        currentLevelName = SceneManager.GetActiveScene().name;
+        DisplayLevelName();
+
         playerPosition = player.transform.position;
 
         FindTotalCoins();
-
         UpdateGUI();
 
         UIManager.instance.fadeFromBlack = true;
@@ -75,7 +80,7 @@ public class GameManager : MonoBehaviour
 
         if (totalCoins == 0)
         {
-            totalCoins = 1; 
+            totalCoins = 1;
         }
     }
 
@@ -95,11 +100,18 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        player.transform.position = playerPosition;
-
         if (isGameOver)
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(currentLevelName);
+        }
+    }
+
+    private void DisplayLevelName()
+    {
+        if (levelText != null)
+        {
+            
+            levelText.text = currentLevelName;
         }
     }
 }

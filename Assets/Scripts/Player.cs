@@ -24,6 +24,7 @@
         private float m_delayToIdle = 0.0f;
         private float m_rollDuration = 8.0f / 14.0f;
         private float m_rollCurrentTime;
+        private bool controlsDisabled = false;
 
         private bool isDamageBoosted = false;
         private bool isSpeedBoosted = false;
@@ -42,6 +43,13 @@
 
         void Update()
         {
+            if (controlsDisabled)
+            {
+                m_body2d.velocity = Vector2.zero;
+                return;
+            }
+
+
             m_timeSinceAttack += Time.deltaTime;
 
             if (m_rolling)
@@ -186,9 +194,12 @@
 
         public void DisableControls()
         {
+            controlsDisabled = true;
             m_speed = 0;
             m_jumpForce = 0;
             m_rollForce = 0;
+            m_body2d.velocity = Vector2.zero; // Arrêter les mouvements
+            m_animator.SetInteger("AnimState", 0); // Forcer l'animation en position idle
         }
 
         private void PerformAttack()

@@ -130,7 +130,7 @@ MonoBehaviour:
   detectionRadius: 10
   attackRange: 8
   stopChaseRange: 5
-  projectilePrefab: {fileID: 7885167933556955792, guid: 99f972399eeed0b43a2ef2be1ead495f, type: 3}
+  projectilePrefab: {fileID: 1019480068096796, guid: 1740469607c5ef74a9dce354e6c48998, type: 3}
   shootCooldown: 2
   predictiveShooting: 1
   explosionRange: 1

@@ -17,7 +17,7 @@ public class items : MonoBehaviour
                 Instantiate(pickupEffect, transform.position, Quaternion.identity);
             }
 
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 

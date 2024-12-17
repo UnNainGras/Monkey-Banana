@@ -49,11 +49,15 @@ public class FlyingEnemies : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
 
-        // Initialisation des points de vie
         currentHealth = maxHealth;
 
         chaseSpeed += Random.Range(-0.5f, 0.5f);
         shootCooldown += Random.Range(-0.3f, 0.3f);
+
+        if (TryGetComponent<Rigidbody2D>(out Rigidbody2D rb))
+        {
+            rb.freezeRotation = true;
+        }
     }
 
     void Update()
@@ -204,14 +208,16 @@ public class FlyingEnemies : MonoBehaviour
         {
             Vector3 direction;
 
+            Vector3 targetPosition = player.position + Vector3.up * 0.5f;
+
             if (predictiveShooting && player.TryGetComponent<Rigidbody2D>(out Rigidbody2D playerRb))
             {
                 Vector3 playerVelocity = playerRb.velocity;
-                direction = ((player.position + playerVelocity * 0.5f) - transform.position).normalized;
+                direction = ((targetPosition + playerVelocity * 0.5f) - transform.position).normalized;
             }
             else
             {
-                direction = (player.position - transform.position).normalized;
+                direction = (targetPosition - transform.position).normalized;
             }
 
             projectile.GetComponent<Bullet>().SetDirection(direction);
