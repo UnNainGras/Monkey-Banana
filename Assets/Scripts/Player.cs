@@ -43,14 +43,17 @@
 
         void Update()
         {
-            if (controlsDisabled)
+        if (controlsDisabled)
+        {
+            if (m_body2d.velocity.magnitude < 0.1f)
             {
                 m_body2d.velocity = Vector2.zero;
-                return;
             }
+            return;
+        }
 
 
-            m_timeSinceAttack += Time.deltaTime;
+        m_timeSinceAttack += Time.deltaTime;
 
             if (m_rolling)
                 m_rollCurrentTime += Time.deltaTime;
@@ -267,6 +270,18 @@
         Debug.Log("Boost de vitesse terminé.");
     }
 
+    public void ApplyKnockback(Vector2 force, float duration)
+    {
+        m_body2d.AddForce(force, ForceMode2D.Impulse);
+        StartCoroutine(DisableControlsTemporarily(duration));
+    }
+
+    private IEnumerator DisableControlsTemporarily(float duration)
+    {
+        controlsDisabled = true; 
+        yield return new WaitForSeconds(duration);
+        controlsDisabled = false;
+    }
 
     private void OnDrawGizmosSelected()
         {
