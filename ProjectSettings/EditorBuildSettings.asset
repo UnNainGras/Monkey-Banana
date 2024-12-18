@@ -23,4 +23,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MenuPreGame.unity
     guid: 3bc4dc311fc50f74baf3fac146d775ed
+  - enabled: 1
+    path: Assets/Scenes/Notice.unity
+    guid: edb64084e7363eb40b093f817f294027
+  - enabled: 1
+    path: Assets/Scenes/Notice2.unity
+    guid: cd76af3d78a58b0498c0f9fc94300f29
   m_configObjects: {}
