@@ -6,6 +6,7 @@ public class AudioManager : MonoBehaviour
 
     private bool isMuted = false;
     private float currentVolume = 1f; 
+    private float savedVolume = 1f; 
 
     private void Awake()
     {
@@ -29,14 +30,29 @@ public class AudioManager : MonoBehaviour
     public void SetVolume(float volume)
     {
         currentVolume = volume;
-        UpdateAudioSettings();
+
+        if (!isMuted)
+        {
+            AudioListener.volume = currentVolume;
+        }
+
         SaveAudioSettings();
     }
 
     public void ToggleMute()
     {
         isMuted = !isMuted;
-        UpdateAudioSettings();
+
+        if (isMuted)
+        {
+            savedVolume = currentVolume;
+            AudioListener.volume = 0f;
+        }
+        else
+        {
+            AudioListener.volume = currentVolume;
+        }
+
         SaveAudioSettings();
     }
 
@@ -66,5 +82,6 @@ public class AudioManager : MonoBehaviour
     {
         isMuted = PlayerPrefs.GetInt("Muted", 0) == 1;
         currentVolume = PlayerPrefs.GetFloat("Volume", 1f);
+        savedVolume = currentVolume; 
     }
 }

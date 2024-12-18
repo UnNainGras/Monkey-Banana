@@ -8,6 +8,8 @@ public class VolumeControl : MonoBehaviour
     public Sprite volumeOnSprite;
     public Sprite volumeOffSprite;
 
+    private bool isInteractingWithSlider = false; // Ajouté
+
     private void Start()
     {
         if (AudioManager.instance != null)
@@ -20,16 +22,22 @@ public class VolumeControl : MonoBehaviour
         muteButton.onClick.AddListener(OnMuteButtonClicked);
     }
 
+    private void Update()
+    {
+        // Vérifie si l'utilisateur a relâché le slider
+        if (isInteractingWithSlider && !Input.GetMouseButton(0))
+        {
+            isInteractingWithSlider = false;
+            UpdateMuteButtonIcon(); // Met à jour l'icône après interaction
+        }
+    }
+
     private void OnSliderValueChanged(float value)
     {
         if (AudioManager.instance != null)
         {
+            isInteractingWithSlider = true;
             AudioManager.instance.SetVolume(value);
-            if (AudioManager.instance.IsMuted() && value > 0f)
-            {
-                AudioManager.instance.ToggleMute();
-                UpdateMuteButtonIcon();
-            }
         }
     }
 
@@ -44,11 +52,10 @@ public class VolumeControl : MonoBehaviour
 
     private void UpdateMuteButtonIcon()
     {
-        if (AudioManager.instance != null)
+        if (AudioManager.instance != null && !isInteractingWithSlider) 
         {
             bool isMuted = AudioManager.instance.IsMuted();
             muteButton.image.sprite = isMuted ? volumeOffSprite : volumeOnSprite;
-            volumeSlider.interactable = !isMuted;
         }
     }
 }
