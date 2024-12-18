@@ -41,196 +41,179 @@
             originalDamage = m_attackDamage; 
     }
 
-        void Update()
+    void Update()
+    {
+    if (controlsDisabled)
+    {
+        if (m_body2d.velocity.magnitude < 0.1f)
         {
-        if (controlsDisabled)
+            m_body2d.velocity = Vector2.zero;
+        }
+        return;
+    }
+
+
+    m_timeSinceAttack += Time.deltaTime;
+
+        if (m_rolling)
+            m_rollCurrentTime += Time.deltaTime;
+
+        if (m_rollCurrentTime > m_rollDuration)
+            m_rolling = false;
+
+        if (!m_grounded && m_groundSensor.State())
         {
-            if (m_body2d.velocity.magnitude < 0.1f)
-            {
-                m_body2d.velocity = Vector2.zero;
-            }
-            return;
+            m_grounded = true;
+            m_animator.SetBool("Grounded", m_grounded);
+            m_canDoubleJump = true;
+        }
+
+        if (m_grounded && !m_groundSensor.State())
+        {
+            m_grounded = false;
+            m_animator.SetBool("Grounded", m_grounded);
+        }
+
+        float inputX = Input.GetAxis("Horizontal");
+
+        if (inputX > 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = false;
+            m_facingDirection = 1;
+        }
+        else if (inputX < 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = true;
+            m_facingDirection = -1;
+        }
+
+        if (!m_rolling)
+            m_body2d.velocity = new Vector2(inputX * m_speed, m_body2d.velocity.y);
+
+        m_animator.SetFloat("AirSpeedY", m_body2d.velocity.y);
+
+        if (Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.25f && !m_rolling)
+        {
+            m_currentAttack++;
+
+            if (m_currentAttack > 3)
+                m_currentAttack = 1;
+
+            if (m_timeSinceAttack > 1.0f)
+                m_currentAttack = 1;
+
+            m_animator.SetTrigger("Attack" + m_currentAttack);
+            m_timeSinceAttack = 0.0f;
+
+            PerformAttack();
         }
 
 
-        m_timeSinceAttack += Time.deltaTime;
+        else if (Input.GetKeyDown("left shift") && !m_rolling)
+        {
+            m_rolling = true;
+            m_animator.SetTrigger("Roll");
+            m_body2d.velocity = new Vector2(m_facingDirection * m_rollForce, m_body2d.velocity.y);
+        }
 
-            if (m_rolling)
-                m_rollCurrentTime += Time.deltaTime;
+        else if (Input.GetKeyDown("space") && (m_grounded || m_canDoubleJump) && !m_rolling)
+        {
+            m_animator.SetTrigger("Jump");
 
-            if (m_rollCurrentTime > m_rollDuration)
-                m_rolling = false;
-
-            if (!m_grounded && m_groundSensor.State())
+            if (!m_grounded && m_canDoubleJump)
             {
-                m_grounded = true;
-                m_animator.SetBool("Grounded", m_grounded);
-                m_canDoubleJump = true;
+                m_body2d.velocity = new Vector2(m_body2d.velocity.x, 0);
+                m_body2d.velocity = new Vector2(m_body2d.velocity.x, m_doubleJumpForce);
+                m_canDoubleJump = false;
             }
-
-            if (m_grounded && !m_groundSensor.State())
+            else if (m_grounded)
             {
                 m_grounded = false;
                 m_animator.SetBool("Grounded", m_grounded);
+                m_body2d.velocity = new Vector2(m_body2d.velocity.x, m_jumpForce);
+                m_groundSensor.Disable(0.2f);
             }
+        }
 
-            // -- Gérer l'entrée et les déplacements --
-            float inputX = Input.GetAxis("Horizontal");
+        else if (Mathf.Abs(inputX) > Mathf.Epsilon)
+        {
+            m_delayToIdle = 0.05f;
+            m_animator.SetInteger("AnimState", 1);
+        }
+        else
+        {
+            m_delayToIdle -= Time.deltaTime;
+            if (m_delayToIdle < 0)
+                m_animator.SetInteger("AnimState", 0);
+        }
+    }
 
-            if (inputX > 0)
+    void AE_SlideDust()
+    {
+        Vector3 spawnPosition;
+
+        if (m_facingDirection == 1)
+            spawnPosition = transform.position;
+        else
+            spawnPosition = transform.position;
+
+        if (m_slideDust != null)
+        {
+            GameObject dust = Instantiate(m_slideDust, spawnPosition, gameObject.transform.localRotation) as GameObject;
+            dust.transform.localScale = new Vector3(m_facingDirection, 1, 1);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("killzone"))
+        {
+            GameManager.instance.Death();
+        }
+    }
+
+    public void TriggerDeathAnimation()
+    {
+        m_animator.SetBool("noBlood", m_noBlood);
+        m_animator.SetTrigger("Death");
+    }
+
+    public void DisableControls()
+    {
+        controlsDisabled = true;
+        m_speed = 0;
+        m_jumpForce = 0;
+        m_rollForce = 0;
+        m_body2d.velocity = Vector2.zero; 
+        m_animator.SetInteger("AnimState", 0);
+    }
+
+    private void PerformAttack()
+    {
+        float attackOffsetX = m_facingDirection * m_attackRange; 
+        Vector3 attackPosition = transform.position + new Vector3(attackOffsetX, 1, 0); 
+
+        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(attackPosition, m_attackRange);
+
+        foreach (var enemy in enemiesInRange)
+        {
+            if (enemy.CompareTag("Enemy"))
             {
-                GetComponent<SpriteRenderer>().flipX = false;
-                m_facingDirection = 1;
-            }
-            else if (inputX < 0)
-            {
-                GetComponent<SpriteRenderer>().flipX = true;
-                m_facingDirection = -1;
-            }
-
-            if (!m_rolling)
-                m_body2d.velocity = new Vector2(inputX * m_speed, m_body2d.velocity.y);
-
-            m_animator.SetFloat("AirSpeedY", m_body2d.velocity.y);
-
-            // -- Gérer les animations --
-            if (Input.GetKeyDown("q") && !m_rolling)
-                m_animator.SetTrigger("Hurt");
-
-            // Attaque
-            else if (Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.25f && !m_rolling)
-            {
-                m_currentAttack++;
-
-                if (m_currentAttack > 3)
-                    m_currentAttack = 1;
-
-                if (m_timeSinceAttack > 1.0f)
-                    m_currentAttack = 1;
-
-                m_animator.SetTrigger("Attack" + m_currentAttack);
-                m_timeSinceAttack = 0.0f;
-
-                PerformAttack();
-            }
-
-            // Block
-            else if (Input.GetMouseButtonDown(1) && !m_rolling)
-            {
-                m_animator.SetTrigger("Block");
-                m_animator.SetBool("IdleBlock", true);
-            }
-
-            else if (Input.GetMouseButtonUp(1))
-                m_animator.SetBool("IdleBlock", false);
-
-            // Roll
-            else if (Input.GetKeyDown("left shift") && !m_rolling)
-            {
-                m_rolling = true;
-                m_animator.SetTrigger("Roll");
-                m_body2d.velocity = new Vector2(m_facingDirection * m_rollForce, m_body2d.velocity.y);
-            }
-
-            // Jump
-            else if (Input.GetKeyDown("space") && (m_grounded || m_canDoubleJump) && !m_rolling)
-            {
-                m_animator.SetTrigger("Jump");
-
-                if (!m_grounded && m_canDoubleJump)
+                var flyingEnemy = enemy.GetComponent<FlyingEnemies>();
+                if (flyingEnemy != null)
                 {
-                    m_body2d.velocity = new Vector2(m_body2d.velocity.x, 0);
-                    m_body2d.velocity = new Vector2(m_body2d.velocity.x, m_doubleJumpForce);
-                    m_canDoubleJump = false;
+                    flyingEnemy.TakeDamage(m_attackDamage);
                 }
-                else if (m_grounded)
+
+                var groundEnemy = enemy.GetComponent<GroundEnemies>();
+                if (groundEnemy != null)
                 {
-                    m_grounded = false;
-                    m_animator.SetBool("Grounded", m_grounded);
-                    m_body2d.velocity = new Vector2(m_body2d.velocity.x, m_jumpForce);
-                    m_groundSensor.Disable(0.2f);
+                    groundEnemy.TakeDamage(m_attackDamage);
                 }
-            }
 
-            else if (Mathf.Abs(inputX) > Mathf.Epsilon)
-            {
-                m_delayToIdle = 0.05f;
-                m_animator.SetInteger("AnimState", 1);
-            }
-            else
-            {
-                m_delayToIdle -= Time.deltaTime;
-                if (m_delayToIdle < 0)
-                    m_animator.SetInteger("AnimState", 0);
             }
         }
-
-        void AE_SlideDust()
-        {
-            Vector3 spawnPosition;
-
-            if (m_facingDirection == 1)
-                spawnPosition = transform.position;
-            else
-                spawnPosition = transform.position;
-
-            if (m_slideDust != null)
-            {
-                GameObject dust = Instantiate(m_slideDust, spawnPosition, gameObject.transform.localRotation) as GameObject;
-                dust.transform.localScale = new Vector3(m_facingDirection, 1, 1);
-            }
-        }
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.gameObject.CompareTag("killzone"))
-            {
-                GameManager.instance.Death();
-            }
-        }
-
-        public void TriggerDeathAnimation()
-        {
-            m_animator.SetBool("noBlood", m_noBlood);
-            m_animator.SetTrigger("Death");
-        }
-
-        public void DisableControls()
-        {
-            controlsDisabled = true;
-            m_speed = 0;
-            m_jumpForce = 0;
-            m_rollForce = 0;
-            m_body2d.velocity = Vector2.zero; // Arrêter les mouvements
-            m_animator.SetInteger("AnimState", 0); // Forcer l'animation en position idle
-        }
-
-        private void PerformAttack()
-        {
-            float attackOffsetX = m_facingDirection * m_attackRange; 
-            Vector3 attackPosition = transform.position + new Vector3(attackOffsetX, 1, 0); 
-
-            Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(attackPosition, m_attackRange);
-
-            foreach (var enemy in enemiesInRange)
-            {
-                if (enemy.CompareTag("Enemy"))
-                {
-                    var flyingEnemy = enemy.GetComponent<FlyingEnemies>();
-                    if (flyingEnemy != null)
-                    {
-                        flyingEnemy.TakeDamage(m_attackDamage);
-                    }
-
-                    var groundEnemy = enemy.GetComponent<GroundEnemies>();
-                    if (groundEnemy != null)
-                    {
-                        groundEnemy.TakeDamage(m_attackDamage);
-                    }
-
-                }
-            }
-        }
+    }
 
     public void BoostDamage(float duration)
     {

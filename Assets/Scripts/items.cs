@@ -30,11 +30,11 @@ public class items : MonoBehaviour
                 break;
 
             case ItemType.Sword:
-                BoostDamage(30f);
+                BoostDamage(15f);
                 break;
 
             case ItemType.Feather:
-                BoostSpeed(30f);
+                BoostSpeed(10f);
                 break;
         }
     }

@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TMP_Text coinText;
-    [SerializeField] private TMP_Text levelText; // TextMeshPro pour afficher le nom de la scène
+    [SerializeField] private TMP_Text levelText; 
 
     [SerializeField] private Player player;
 
