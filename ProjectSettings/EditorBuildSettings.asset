@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level 4.unity
     guid: 6f00d407ce454e84d8ad36b7125be4c6
+  - enabled: 1
+    path: Assets/Scenes/MenuPreGame.unity
+    guid: 3bc4dc311fc50f74baf3fac146d775ed
   m_configObjects: {}
