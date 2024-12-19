@@ -11,10 +11,14 @@
         [SerializeField] GameObject m_slideDust;
         [SerializeField] float m_attackRange = 1.0f;  // Portée de l'attaque
         [SerializeField] int m_attackDamage = 1;     // Dégâts infligés par l'attaque
+        [SerializeField] private AudioClip jumpSFX;
+        [SerializeField] private AudioClip attackSFX;
+        [SerializeField] private AudioClip walkSFX;
 
         private Animator m_animator;
         private Rigidbody2D m_body2d;
         private Sensor_Player m_groundSensor;
+        private AudioSource audioSource;
         private bool m_grounded = false;
         private bool m_rolling = false;
         private bool m_canDoubleJump = false;
@@ -30,6 +34,7 @@
         private bool isSpeedBoosted = false;
         private float originalSpeed;
         private int originalDamage;
+        
 
 
     void Start()
@@ -37,6 +42,7 @@
             m_animator = GetComponent<Animator>();
             m_body2d = GetComponent<Rigidbody2D>();
             m_groundSensor = transform.Find("GroundSensor").GetComponent<Sensor_Player>();
+            audioSource = GetComponent<AudioSource>();
             originalSpeed = m_speed;      
             originalDamage = m_attackDamage; 
     }
@@ -105,6 +111,7 @@
             m_animator.SetTrigger("Attack" + m_currentAttack);
             m_timeSinceAttack = 0.0f;
 
+            audioSource.PlayOneShot(attackSFX, 2.0f);
             PerformAttack();
         }
 
@@ -119,6 +126,10 @@
         else if (Input.GetKeyDown("space") && (m_grounded || m_canDoubleJump) && !m_rolling)
         {
             m_animator.SetTrigger("Jump");
+            if (jumpSFX != null)
+            {
+                audioSource.PlayOneShot(jumpSFX, 2.0f);
+            }
 
             if (!m_grounded && m_canDoubleJump)
             {
@@ -139,6 +150,10 @@
         {
             m_delayToIdle = 0.05f;
             m_animator.SetInteger("AnimState", 1);
+            if (!audioSource.isPlaying)
+            {
+                audioSource.PlayOneShot(walkSFX, 2.0f);
+            }
         }
         else
         {
