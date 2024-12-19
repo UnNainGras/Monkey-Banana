@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class FlyingEnemies : MonoBehaviour
 {
+    [SerializeField] private AudioClip fireballSFX;
+
     // Nouveau : Points de vie
     public int maxHealth = 3;
     private int currentHealth;
@@ -38,6 +40,8 @@ public class FlyingEnemies : MonoBehaviour
 
     private enum State { Patrolling, Chasing, Stopped, Attacking }
     private State currentState;
+    private AudioSource audioSource;
+
 
     void Start()
     {
@@ -45,6 +49,7 @@ public class FlyingEnemies : MonoBehaviour
         patrolTarget = GetRandomPatrolPoint();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         currentState = State.Patrolling;
+        audioSource = GetComponent<AudioSource>();
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
@@ -223,6 +228,8 @@ public class FlyingEnemies : MonoBehaviour
             projectile.GetComponent<Bullet>().SetDirection(direction);
             rb.velocity = direction * 5f;
         }
+
+        audioSource.PlayOneShot(fireballSFX, 2.0f);
     }
 
     private void UpdateOrientation()
@@ -233,11 +240,11 @@ public class FlyingEnemies : MonoBehaviour
 
             if (direction > 0)
             {
-                spriteRenderer.flipX = false; // Regarde à droite
+                spriteRenderer.flipX = false; // Regarde a droite
             }
             else if (direction < 0)
             {
-                spriteRenderer.flipX = true; // Regarde à gauche
+                spriteRenderer.flipX = true; // Regarde a gauche
             }
         }
     }

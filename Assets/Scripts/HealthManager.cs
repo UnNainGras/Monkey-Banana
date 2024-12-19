@@ -12,8 +12,10 @@ public class HealthManager : MonoBehaviour
     [SerializeField] private Image[] hearts; 
     [SerializeField] private Sprite FullHeartSprite;
     [SerializeField] private Sprite EmptyHeartSprite;
+    [SerializeField] private AudioClip hurtSFX;
 
     private GameObject Player;
+    private AudioSource audioSource;
 
     private void Awake()
     {
@@ -22,6 +24,7 @@ public class HealthManager : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         Player = GameObject.FindObjectOfType<Player>().gameObject;
         currentHealth = MaxHealth;
         DisplayHearts();
@@ -40,6 +43,8 @@ public class HealthManager : MonoBehaviour
             }
 
             Instantiate(damageEffect, Player.transform.position, Quaternion.identity);
+
+            audioSource.PlayOneShot(hurtSFX, 2.0f);
         }
     }
 
