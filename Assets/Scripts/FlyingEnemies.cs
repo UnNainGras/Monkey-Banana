@@ -15,7 +15,7 @@ public class FlyingEnemies : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
-    public enum EnemyType { Shooter, Kamikaze }
+    public enum EnemyType { Shooter }
     public EnemyType enemyType;
 
     public float patrolRadius = 5f;
@@ -33,8 +33,6 @@ public class FlyingEnemies : MonoBehaviour
     public float shootCooldown = 2f;
     private float shootTimer = 0f;
     public bool predictiveShooting = false;
-
-    public float explosionRange = 1f;
 
     public GameObject hitEffect;
 
@@ -113,9 +111,9 @@ public class FlyingEnemies : MonoBehaviour
         if (isHit) yield break;
 
         isHit = true;
-        spriteRenderer.color = hitColor; 
-        yield return new WaitForSeconds(0.2f); 
-        spriteRenderer.color = originalColor; 
+        spriteRenderer.color = hitColor;
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = originalColor;
         isHit = false;
     }
 
@@ -240,11 +238,11 @@ public class FlyingEnemies : MonoBehaviour
 
             if (direction > 0)
             {
-                spriteRenderer.flipX = false; // Regarde a droite
+                spriteRenderer.flipX = false; // Regarde à droite
             }
             else if (direction < 0)
             {
-                spriteRenderer.flipX = true; // Regarde a gauche
+                spriteRenderer.flipX = true; // Regarde à gauche
             }
         }
     }
@@ -261,11 +259,6 @@ public class FlyingEnemies : MonoBehaviour
             Gizmos.DrawWireSphere(transform.position, attackRange);
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, stopChaseRange);
-        }
-        if (enemyType == EnemyType.Kamikaze)
-        {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(transform.position, explosionRange);
         }
     }
 }
