@@ -54,10 +54,16 @@ public class ExitTrigger : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         string currentSceneName = SceneManager.GetActiveScene().name;
-
         int currentLevelNumber = int.Parse(currentSceneName.Replace("Level ", ""));
-        string nextLevelName = "Level " + (currentLevelNumber + 1).ToString();
 
-        SceneManager.LoadScene(nextLevelName);
+        if (currentLevelNumber == 4)
+        {
+            SceneManager.LoadScene("Menu"); 
+        }
+        else
+        {
+            string nextLevelName = "Level " + (currentLevelNumber + 1).ToString();
+            SceneManager.LoadScene(nextLevelName);
+        }
     }
 }
