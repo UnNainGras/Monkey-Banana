@@ -49,7 +49,7 @@ public class HealthManager : MonoBehaviour
     }
 
     Instantiate(damageEffect, Player.transform.position, Quaternion.identity);
-    audioSource.PlayOneShot(hurtSFX, 2.0f);
+    audioSource.PlayOneShot(hurtSFX, 5.0f);
 }
 
 

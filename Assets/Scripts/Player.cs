@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
         [SerializeField] private AudioClip jumpSFX;
         [SerializeField] private AudioClip attackSFX;
         [SerializeField] private AudioClip walkSFX;
+        [SerializeField] private AudioClip deathSFX;
 
         private Animator m_animator;
         private Rigidbody2D m_body2d;
@@ -117,7 +118,7 @@ public class Player : MonoBehaviour
             m_animator.SetTrigger("Attack" + m_currentAttack);
             m_timeSinceAttack = 0.0f;
 
-            audioSource.PlayOneShot(attackSFX, 2.0f);
+            audioSource.PlayOneShot(attackSFX, 5.0f);
             PerformAttack();
         }
 
@@ -134,7 +135,7 @@ public class Player : MonoBehaviour
             m_animator.SetTrigger("Jump");
             if (jumpSFX != null)
             {
-                audioSource.PlayOneShot(jumpSFX, 2.0f);
+                audioSource.PlayOneShot(jumpSFX, 5.0f);
             }
 
             if (!m_grounded && m_canDoubleJump)
@@ -158,7 +159,7 @@ public class Player : MonoBehaviour
             m_animator.SetInteger("AnimState", 1);
             if (!audioSource.isPlaying)
             {
-                audioSource.PlayOneShot(walkSFX, 2.0f);
+                audioSource.PlayOneShot(walkSFX, 3.0f);
             }
         }
         else
@@ -221,6 +222,7 @@ private void OnCollisionEnter2D(Collision2D collision)
 
     public void TriggerDeathAnimation()
     {
+        audioSource.PlayOneShot(deathSFX, 5.0f);
         m_animator.SetBool("noBlood", m_noBlood);
         m_animator.SetTrigger("Death");
     }

@@ -12,12 +12,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text levelText; 
 
     [SerializeField] private Player player;
+    [SerializeField] private AudioClip coinSFX;
 
     private int coinCount = 0;
     private int totalCoins = 0;
     private bool isGameOver = false;
     private Vector3 playerPosition;
     private string currentLevelName;
+    private AudioSource audioSource;
 
     private void Awake()
     {
@@ -27,6 +29,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         currentLevelName = SceneManager.GetActiveScene().name;
         DisplayLevelName();
 
@@ -40,6 +43,7 @@ public class GameManager : MonoBehaviour
 
     public void IncrementCoinCount()
     {
+        audioSource.PlayOneShot(coinSFX, 5.0f);
         coinCount++;
         UpdateGUI();
 
@@ -86,7 +90,7 @@ public class GameManager : MonoBehaviour
 
     private void UnlockExit()
     {
-        Debug.Log("Toutes les pièces collectées ! La sortie est maintenant accessible.");
+        Debug.Log("Toutes les pieces collectees ! La sortie est maintenant accessible.");
         ExitTrigger.instance.Unlock();
     }
 

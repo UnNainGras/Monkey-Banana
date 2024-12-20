@@ -227,7 +227,7 @@ public class FlyingEnemies : MonoBehaviour
             rb.velocity = direction * 5f;
         }
 
-        audioSource.PlayOneShot(fireballSFX, 2.0f);
+        audioSource.PlayOneShot(fireballSFX, 5.0f);
     }
 
     private void UpdateOrientation()
@@ -238,11 +238,11 @@ public class FlyingEnemies : MonoBehaviour
 
             if (direction > 0)
             {
-                spriteRenderer.flipX = false; // Regarde à droite
+                spriteRenderer.flipX = false; // Regarde a droite
             }
             else if (direction < 0)
             {
-                spriteRenderer.flipX = true; // Regarde à gauche
+                spriteRenderer.flipX = true; // Regarde a gauche
             }
         }
     }
