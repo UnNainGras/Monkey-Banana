@@ -29,4 +29,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Notice2.unity
     guid: cd76af3d78a58b0498c0f9fc94300f29
+  - enabled: 1
+    path: Assets/Scenes/MenuScore.unity
+    guid: a35adbd5893eac548aa8a36551a505a6
+  - enabled: 1
+    path: Assets/Scenes/MenuHighScore.unity
+    guid: 67b8cd2edd5a443468c1632e7db2d3bb
   m_configObjects: {}

@@ -49,6 +49,11 @@ public class Events : MonoBehaviour
         SceneManager.LoadScene("Notice2");
     }
 
+    public void MenuHighScore()
+    {
+        SceneManager.LoadScene("MenuHighScore");
+    }
+
     public void QuitGame()
     {
         Application.Quit();

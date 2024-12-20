@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        LevelTimer.instance.StartLevelTimer();
         audioSource = GetComponent<AudioSource>();
         currentLevelName = SceneManager.GetActiveScene().name;
         DisplayLevelName();
