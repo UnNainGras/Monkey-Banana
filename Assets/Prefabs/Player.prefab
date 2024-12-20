@@ -141,6 +141,8 @@ MonoBehaviour:
   jumpSFX: {fileID: 8300000, guid: 4e349dc959014a845b9aa317d1c2b7f0, type: 3}
   attackSFX: {fileID: 8300000, guid: 323e15cfe809e114ab92c9f4b25e8bc2, type: 3}
   walkSFX: {fileID: 8300000, guid: 023ea3ddeaa8dd146b7633a0800e5a0e, type: 3}
+  deathSFX: {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
+  cheatCode: 11010000110100001201000012010000
 --- !u!95 &2655505060201611074
 Animator:
   serializedVersion: 5
