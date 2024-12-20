@@ -3756,7 +3756,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.1544571, y: -0.34486008, z: -10}
+  m_LocalPosition: {x: -8.334727, y: -0.26652002, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4329,6 +4329,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1257432869399111996, guid: 35f409698c2eb804292697d65adef0d0, type: 3}
   m_PrefabInstance: {fileID: 811971283}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &825486292 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6135584112899021088, guid: 68f016fd0ed84eb47908ffd658c81656, type: 3}
+  m_PrefabInstance: {fileID: 1751730675}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &856315163
 GameObject:
   m_ObjectHideFlags: 0
@@ -17698,6 +17709,8 @@ MonoBehaviour:
   FullHeartSprite: {fileID: 21300000, guid: 45c70376f652317479598a69cb209e70, type: 3}
   EmptyHeartSprite: {fileID: 21300000, guid: b693eb9329bf3b04b89ff8740c18a857, type: 3}
   hurtSFX: {fileID: 8300000, guid: 8b23b175a78d6b5458322e3a6c9905d0, type: 3}
+  invincibilityText: {fileID: 825486292}
+  isInvincible: 0
 --- !u!4 &1965945692
 Transform:
   m_ObjectHideFlags: 0

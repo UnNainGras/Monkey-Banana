@@ -1,3 +1,5 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,9 +15,13 @@ public class HealthManager : MonoBehaviour
     [SerializeField] private Sprite FullHeartSprite;
     [SerializeField] private Sprite EmptyHeartSprite;
     [SerializeField] private AudioClip hurtSFX;
+    [SerializeField] private TextMeshProUGUI invincibilityText;
 
     private GameObject Player;
     private AudioSource audioSource;
+    public bool isInvincible = false;
+    private Coroutine invincibilityCoroutine;
+
 
     private void Awake()
     {
@@ -31,22 +37,21 @@ public class HealthManager : MonoBehaviour
     }
 
     public void HurtPlayer()
+{
+    if (isInvincible || currentHealth <= 0) return; // Ignorer si invincible
+
+    currentHealth--; 
+    DisplayHearts();
+
+    if (currentHealth == 0)
     {
-        if (currentHealth > 0)
-        {
-            currentHealth--; 
-            DisplayHearts();
-
-            if (currentHealth == 0)
-            {
-                GameManager.instance.Death(); 
-            }
-
-            Instantiate(damageEffect, Player.transform.position, Quaternion.identity);
-
-            audioSource.PlayOneShot(hurtSFX, 2.0f);
-        }
+        GameManager.instance.Death(); 
     }
+
+    Instantiate(damageEffect, Player.transform.position, Quaternion.identity);
+    audioSource.PlayOneShot(hurtSFX, 2.0f);
+}
+
 
     public void DisplayHearts()
     {
@@ -62,4 +67,32 @@ public class HealthManager : MonoBehaviour
             }
         }
     }
+   public void ActivateInvincibility(float duration)
+{
+    if (invincibilityCoroutine != null)
+    {
+        StopCoroutine(invincibilityCoroutine);
+    }
+    invincibilityCoroutine = StartCoroutine(InvincibilityCoroutine(duration));
+}
+
+
+private IEnumerator InvincibilityCoroutine(float duration)
+{
+    isInvincible = true;
+    invincibilityText.gameObject.SetActive(true); 
+
+    float remainingTime = duration;
+    while (remainingTime > 0)
+    {
+        invincibilityText.text = $"Invincibilité : {remainingTime:F1} s";
+        yield return new WaitForSeconds(0.1f); 
+        remainingTime -= 0.1f;
+    }
+
+    isInvincible = false;
+    invincibilityText.gameObject.SetActive(false);
+}
+
+
 }

@@ -1,7 +1,8 @@
 ﻿    using UnityEngine;
     using System.Collections;
+using System.Collections.Generic;
 
-    public class Player : MonoBehaviour
+public class Player : MonoBehaviour
     {
         [SerializeField] float m_speed = 4.0f;
         [SerializeField] float m_jumpForce = 7.5f;
@@ -34,6 +35,9 @@
         private bool isSpeedBoosted = false;
         private float originalSpeed;
         private int originalDamage;
+        [SerializeField] private List<KeyCode> cheatCode = new List<KeyCode> { KeyCode.UpArrow, KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.DownArrow};
+        private int cheatIndex = 0;
+
         
 
 
@@ -49,6 +53,8 @@
 
     void Update()
     {
+        HandleCheatCode();
+
     if (controlsDisabled)
     {
         if (m_body2d.velocity.magnitude < 0.1f)
@@ -179,13 +185,39 @@
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void HandleCheatCode()
+{
+    if (Input.anyKeyDown)
     {
-        if (collision.gameObject.CompareTag("killzone"))
+        if (Input.GetKeyDown(cheatCode[cheatIndex]))
         {
-            GameManager.instance.Death();
+            cheatIndex++;
+
+            if (cheatIndex == cheatCode.Count)
+            {
+                HealthManager.instance.ActivateInvincibility(60); 
+                cheatIndex = 0; // Réinitialiser après activation
+                Debug.Log("Mode Invincible Activé !");
+            }
+        }
+        else
+        {
+            cheatIndex = 0; // Réinitialiser en cas d'erreur
         }
     }
+}
+
+
+
+private void OnCollisionEnter2D(Collision2D collision)
+{
+    if (collision.gameObject.CompareTag("killzone") && !HealthManager.instance.isInvincible)
+    {
+        GameManager.instance.Death(); 
+    }
+}
+
+
 
     public void TriggerDeathAnimation()
     {
